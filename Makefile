@@ -18,21 +18,24 @@ LIBS = `pkg-config --libs gtk+-3.0`
 DIR = init/
 
 ############# BUILD THE APPLICATION:
-$(PROG): init.o queue.o operation.o
-	$(CC) $(CFLAGS) -o $(PROG) init.o queue.o operation.o $(LIBS)
+$(PROG): init.o queue.o operation.o check.o
+	$(CC) $(CFLAGS) -o $(PROG) init.o queue.o operation.o check.o $(LIBS)
 	rm *.o
 
-# compile init files
+# compile init folder files
 init.o: $(DIR)init.c $(DIR)init.h
 	$(CC) $(CFLAGS) -c $(DIR)init.c $(LIBS)
 
-# compile queue files
+# compile queue folder files
 queue.o: queue/queue.c queue/queue.h
 	$(CC) -c queue/queue.c
 
-# compile calc files
+# compile operation folder files
 operation.o: operation/operation.c operation/operation.h
 	$(CC) -c operation/operation.c
+
+check.o: operation/check.c operation/check.h
+	$(CC) -c operation/check.c
 
 # delete the app
 clean:
