@@ -30,8 +30,11 @@ static GtkWidget* zero_button;
 static GtkWidget* neg_pos_button;
 static GtkWidget* equal_button;
 
+static GtkTextBuffer* text_buffer;
+
 static char operation[MAX_READ_OPERATION];
 static int number_of_operations = 0;
+
 void on_zero_button_click(){
      if(strlen(operation) == 0) return;
      strcat(operation,"0");
@@ -139,22 +142,30 @@ void on_divide_button_click(){
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
 }
 
+void on_changed_text(){
+  // set the result of the operation here 
+  gtk_text_buffer_set_text(text_buffer, "123456789", 5);
+}
+
 int main(int argc, char** argv){
      gtk_init(&argc,&argv);
 
-     GtkBuilder* file = gtk_builder_new_from_file("init/calc.xml");
+     GtkBuilder* file = gtk_builder_new_from_file("ui/calc.xml");
 
      main_window   = GTK_WIDGET(gtk_builder_get_object(file,"main_window"));
      g_signal_connect(main_window,"destroy",G_CALLBACK(gtk_main_quit),NULL);
     
      main_box        = GTK_WIDGET(gtk_builder_get_object(file,"main_box"));
      text_box        = GTK_WIDGET(gtk_builder_get_object(file,"text_box"));
-     text_scan       = GTK_WIDGET(gtk_builder_get_object(file,"text_scan"));
-     text_view       = GTK_WIDGET(gtk_builder_get_object(file,"text_view"));
      first_row       = GTK_WIDGET(gtk_builder_get_object(file,"first_row"));
      second_row      = GTK_WIDGET(gtk_builder_get_object(file,"second_row"));
      third_row       = GTK_WIDGET(gtk_builder_get_object(file,"third_row"));
      fourth_row      = GTK_WIDGET(gtk_builder_get_object(file,"fourth_row"));
+
+     text_scan       = GTK_WIDGET(gtk_builder_get_object(file,"text_scan"));
+     g_signal_connect(GTK_EDITABLE(text_scan), "changed", G_CALLBACK(on_changed_text), NULL);
+
+     text_view       = GTK_WIDGET(gtk_builder_get_object(file,"text_view")); 
 
      delete_button = GTK_WIDGET(gtk_builder_get_object(file,"delete_button"));
      g_signal_connect(delete_button, "clicked", G_CALLBACK(on_delete_button_click),NULL);
@@ -210,6 +221,8 @@ int main(int argc, char** argv){
 
      neg_pos_button  = GTK_WIDGET(gtk_builder_get_object(file,"neg_pos_button"));
      equal_button    = GTK_WIDGET(gtk_builder_get_object(file,"equal_button"));
+
+     text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
 
      //gtk_builder_connect_signals(file,NULL);
      gtk_widget_show(main_window);
