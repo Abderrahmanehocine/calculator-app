@@ -1,102 +1,163 @@
 #include "init.h"
 
 // Global variables:
-static GtkWidget* main_window;
-static GtkWidget* main_box;
-static GtkWidget* text_box;
-static GtkWidget* text_scan;
-static GtkWidget* text_view;
-static GtkWidget* first_row;
-static GtkWidget* seven_button;
-static GtkWidget* eight_button;
-static GtkWidget* nine_button;
-static GtkWidget* delete_button;
-static GtkWidget* clear_button;
-static GtkWidget* second_row;
-static GtkWidget* four_button;
-static GtkWidget* five_button;
-static GtkWidget* six_button;
-static GtkWidget* plus_button;
-static GtkWidget* minus_button;
-static GtkWidget* third_row;
-static GtkWidget* one_button;
-static GtkWidget* two_button;
-static GtkWidget* three_button;
-static GtkWidget* multiple_button;
-static GtkWidget* divide_button;
-static GtkWidget* fourth_row;
-static GtkWidget* dot_button;
-static GtkWidget* zero_button;
-static GtkWidget* neg_pos_button;
-static GtkWidget* equal_button;
-
-static GtkTextBuffer* text_buffer;
 
 static char operation[MAX_READ_OPERATION];
-static int number_of_operations = 0;
+static bool check_operation = false;
 
-void on_zero_button_click(){
+static void set_operation(){
+     check_operation = false;
+}
+
+void on_zero_button_click(GtkWidget* text_scan, gpointer data){
      if(strlen(operation) == 0) return;
      strcat(operation,"0");
+     text_scan = data;
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_one_button_click(){
+void on_one_button_click(GtkWidget* text_scan, gpointer data){
+     if(get_new_number()){
+          enqueue(1);
+          set_new_number("false");
+     }
+     else {
+          update(1);
+     }
      strcat(operation,"1");
+     text_scan = data;
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_two_button_click(){
+void on_two_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(get_new_number()){
+          enqueue(2);
+          set_new_number("false");
+     }
+     else {
+          update(2);
+     }
      strcat(operation,"2");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_three_button_click(){
+void on_three_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(get_new_number()){
+          enqueue(3);
+          set_new_number("false");
+     }
+     else {
+          update(3);
+     }
      strcat(operation,"3");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_four_button_click(){
+void on_four_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(get_new_number()){
+          enqueue(4);
+          set_new_number("false");
+     }
+     else {
+          update(4);
+     }
      strcat(operation,"4");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_five_button_click(){
+void on_five_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(get_new_number()){
+          enqueue(5);
+          set_new_number("false");
+     }
+     else {
+          update(5);
+     }
      strcat(operation,"5");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_six_button_click(){
+void on_six_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(get_new_number()){
+          enqueue(6);
+          set_new_number("false");
+     }
+     else {
+          update(6);
+     }
      strcat(operation,"6");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_seven_button_click(){
+void on_seven_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(get_new_number()){
+          enqueue(7);
+          set_new_number("false");
+     }
+     else {
+          update(7);
+     }
      strcat(operation,"7");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_eight_button_click(){
+void on_eight_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(get_new_number()){
+          enqueue(8);
+          set_new_number("false");
+     }
+     else {
+          update(8);
+     }
      strcat(operation,"8");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_nine_button_click(){
+void on_nine_button_click(GtkWidget* entry, gpointer data){
+     entry = data;
+     if(get_new_number()){
+          enqueue(9);
+          set_new_number("false");
+     }
+     else {
+          update(9);
+     }
      strcat(operation,"9");
-     gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     gtk_entry_set_text(GTK_ENTRY(entry), operation);
+     set_operation();
 }
 
-void on_delete_button_click(){
+void on_delete_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
      operation[strlen(operation)-1] = '\0';
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     set_operation();
 }
 
-void on_clear_button_click(){
+void on_clear_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
      operation[0] = '\0';
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
 }
 
-void on_dot_button_click(){
+void on_dot_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
      if(strlen(operation) == 0){
           strcat(operation,"0.");
      }
@@ -106,127 +167,146 @@ void on_dot_button_click(){
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
 }
 
-void on_plus_button_click(){
-     if(strlen(operation) == 0){
+void on_plus_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(strlen(operation) == 0 || check_operation){
           return;
      }
-     number_of_operations++;
      strcat(operation,"+");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     check_operation = true;
 }
 
-void on_minus_button_click(){
-     if(strlen(operation) == 0){
+void on_minus_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(strlen(operation) == 0 || check_operation){
           return;
      }
-     number_of_operations++;
      strcat(operation,"-");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     check_operation = true;
 }
 
-void on_multiple_button_click(){
-     if(strlen(operation) == 0){
+void on_multiple_button_click(GtkWidget* text_scan, gpointer data){
+     text_scan = data;
+     if(strlen(operation) == 0 || check_operation){
           return;
      }
-     number_of_operations++;
      strcat(operation,"x");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     check_operation = true;
 }
 
-void on_divide_button_click(){
-     if(strlen(operation) == 0){
+void on_divide_button_click(GtkEntry* text_scan, gpointer data){
+     text_scan = data;
+     if(strlen(operation) == 0 || check_operation){
           return;
      }
-     number_of_operations++;
+     set_new_number("true");
+     set_operation('/');
+     Print();
      strcat(operation,"÷");
      gtk_entry_set_text(GTK_ENTRY(text_scan), operation);
+     check_operation = true;
 }
 
-void on_changed_text(){
+void on_equal_button_click(GtkWidget* text_scan, gpointer data){
+     Print();
+}
+
+void on_changed_text(GtkTextBuffer* text_buffer, gpointer data){
+     text_buffer = data;
   // set the result of the operation here 
-  gtk_text_buffer_set_text(text_buffer, "123456789", 5);
+  /*gtk_text_buffer_set_text(text_buffer, "123456789", 5);*/
+  //Print();
 }
 
 int main(int argc, char** argv){
      gtk_init(&argc,&argv);
 
+     calc widget;
+
      GtkBuilder* file = gtk_builder_new_from_file("ui/calc.xml");
 
-     main_window   = GTK_WIDGET(gtk_builder_get_object(file,"main_window"));
-     g_signal_connect(main_window,"destroy",G_CALLBACK(gtk_main_quit),NULL);
+     widget.main_window   = GTK_WIDGET(gtk_builder_get_object(file,"main_window"));
+     g_signal_connect(widget.main_window,"destroy",G_CALLBACK(gtk_main_quit),NULL);
     
-     main_box        = GTK_WIDGET(gtk_builder_get_object(file,"main_box"));
-     text_box        = GTK_WIDGET(gtk_builder_get_object(file,"text_box"));
-     first_row       = GTK_WIDGET(gtk_builder_get_object(file,"first_row"));
-     second_row      = GTK_WIDGET(gtk_builder_get_object(file,"second_row"));
-     third_row       = GTK_WIDGET(gtk_builder_get_object(file,"third_row"));
-     fourth_row      = GTK_WIDGET(gtk_builder_get_object(file,"fourth_row"));
+     widget.main_box        = GTK_WIDGET(gtk_builder_get_object(file,"main_box"));
+     widget.text_box        = GTK_WIDGET(gtk_builder_get_object(file,"text_box"));
+     widget.first_row       = GTK_WIDGET(gtk_builder_get_object(file,"first_row"));
+     widget.second_row      = GTK_WIDGET(gtk_builder_get_object(file,"second_row"));
+     widget.third_row       = GTK_WIDGET(gtk_builder_get_object(file,"third_row"));
+     widget.fourth_row      = GTK_WIDGET(gtk_builder_get_object(file,"fourth_row"));
 
-     text_scan       = GTK_WIDGET(gtk_builder_get_object(file,"text_scan"));
-     g_signal_connect(GTK_EDITABLE(text_scan), "changed", G_CALLBACK(on_changed_text), NULL);
+     widget.text_scan       = GTK_WIDGET(gtk_builder_get_object(file,"text_scan"));
+     g_signal_connect(GTK_EDITABLE(widget.text_scan), "changed", G_CALLBACK(on_changed_text),widget.text_buffer);
 
-     text_view       = GTK_WIDGET(gtk_builder_get_object(file,"text_view")); 
+     widget.text_view       = GTK_WIDGET(gtk_builder_get_object(file,"text_view")); 
 
-     delete_button = GTK_WIDGET(gtk_builder_get_object(file,"delete_button"));
-     g_signal_connect(delete_button, "clicked", G_CALLBACK(on_delete_button_click),NULL);
+     widget.delete_button = GTK_WIDGET(gtk_builder_get_object(file,"delete_button"));
+     g_signal_connect(widget.delete_button, "clicked", G_CALLBACK(on_delete_button_click),widget.text_scan);
 
-     clear_button  = GTK_WIDGET(gtk_builder_get_object(file,"clear_button"));
-     g_signal_connect(clear_button, "clicked", G_CALLBACK(on_clear_button_click),NULL);
+     widget.clear_button  = GTK_WIDGET(gtk_builder_get_object(file,"clear_button"));
+     g_signal_connect(widget.clear_button, "clicked", G_CALLBACK(on_clear_button_click),widget.text_scan);
 
-     plus_button   = GTK_WIDGET(gtk_builder_get_object(file,"plus_button"));
-     g_signal_connect(plus_button, "clicked", G_CALLBACK(on_plus_button_click),NULL);
+     widget.plus_button   = GTK_WIDGET(gtk_builder_get_object(file,"plus_button"));
+     g_signal_connect(widget.plus_button, "clicked", G_CALLBACK(on_plus_button_click),widget.text_scan);
 
-     minus_button  = GTK_WIDGET(gtk_builder_get_object(file,"minus_button"));
-     g_signal_connect(minus_button, "clicked", G_CALLBACK(on_minus_button_click),NULL);
+     widget.minus_button  = GTK_WIDGET(gtk_builder_get_object(file,"minus_button"));
+     g_signal_connect(widget.minus_button, "clicked", G_CALLBACK(on_minus_button_click),widget.text_scan);
 
-     multiple_button = GTK_WIDGET(gtk_builder_get_object(file,"multiple_button"));
-     g_signal_connect(multiple_button, "clicked", G_CALLBACK(on_multiple_button_click),NULL);
+     widget.multiple_button = GTK_WIDGET(gtk_builder_get_object(file,"multiple_button"));
+     g_signal_connect(widget.multiple_button, "clicked", G_CALLBACK(on_multiple_button_click),widget.text_scan);
 
-     divide_button   = GTK_WIDGET(gtk_builder_get_object(file,"divide_button"));
-     g_signal_connect(divide_button, "clicked", G_CALLBACK(on_divide_button_click),NULL);
+     widget.divide_button   = GTK_WIDGET(gtk_builder_get_object(file,"divide_button"));
+     g_signal_connect(widget.divide_button, "clicked", G_CALLBACK(on_divide_button_click),widget.text_scan);
 
-     zero_button   = GTK_WIDGET(gtk_builder_get_object(file,"zero_button"));
-     g_signal_connect(zero_button, "clicked", G_CALLBACK(on_zero_button_click),NULL);
+     widget.zero_button   = GTK_WIDGET(gtk_builder_get_object(file,"zero_button"));
+     g_signal_connect(widget.zero_button, "clicked", G_CALLBACK(on_zero_button_click),widget.text_scan);
 
-     one_button    = GTK_WIDGET(gtk_builder_get_object(file,"one_button"));
-     g_signal_connect(one_button, "clicked", G_CALLBACK(on_one_button_click),NULL);
+     widget.one_button    = GTK_WIDGET(gtk_builder_get_object(file,"one_button"));
+     g_signal_connect(widget.one_button, "clicked", G_CALLBACK(on_one_button_click),widget.text_scan);
 
-     two_button    = GTK_WIDGET(gtk_builder_get_object(file,"two_button"));
-     g_signal_connect(two_button, "clicked", G_CALLBACK(on_two_button_click),NULL);
+     widget.two_button    = GTK_WIDGET(gtk_builder_get_object(file,"two_button"));
+     g_signal_connect(widget.two_button, "clicked", G_CALLBACK(on_two_button_click),widget.text_scan);
 
-     three_button  = GTK_WIDGET(gtk_builder_get_object(file,"three_button"));
-     g_signal_connect(three_button, "clicked", G_CALLBACK(on_three_button_click),NULL);
+     widget.three_button  = GTK_WIDGET(gtk_builder_get_object(file,"three_button"));
+     g_signal_connect(widget.three_button, "clicked", G_CALLBACK(on_three_button_click),widget.text_scan);
 
-     four_button   = GTK_WIDGET(gtk_builder_get_object(file,"four_button"));
-     g_signal_connect(four_button, "clicked", G_CALLBACK(on_four_button_click),NULL);
+     widget.four_button   = GTK_WIDGET(gtk_builder_get_object(file,"four_button"));
+     g_signal_connect(widget.four_button, "clicked", G_CALLBACK(on_four_button_click),widget.text_scan);
 
-     five_button   = GTK_WIDGET(gtk_builder_get_object(file,"five_button"));
-     g_signal_connect(five_button, "clicked", G_CALLBACK(on_five_button_click),NULL);
+     widget.five_button   = GTK_WIDGET(gtk_builder_get_object(file,"five_button"));
+     g_signal_connect(widget.five_button, "clicked", G_CALLBACK(on_five_button_click),widget.text_scan);
 
-     six_button    = GTK_WIDGET(gtk_builder_get_object(file,"six_button"));
-     g_signal_connect(six_button, "clicked", G_CALLBACK(on_six_button_click),NULL);
+     widget.six_button    = GTK_WIDGET(gtk_builder_get_object(file,"six_button"));
+     g_signal_connect(widget.six_button, "clicked", G_CALLBACK(on_six_button_click),widget.text_scan);
 
-     seven_button  = GTK_WIDGET(gtk_builder_get_object(file,"seven_button"));
-     g_signal_connect(seven_button, "clicked", G_CALLBACK(on_seven_button_click),NULL);
+     widget.seven_button  = GTK_WIDGET(gtk_builder_get_object(file,"seven_button"));
+     g_signal_connect(widget.seven_button, "clicked", G_CALLBACK(on_seven_button_click),widget.text_scan);
 
-     eight_button  = GTK_WIDGET(gtk_builder_get_object(file,"eight_button"));
-     g_signal_connect(eight_button, "clicked", G_CALLBACK(on_eight_button_click),NULL);
+     widget.eight_button  = GTK_WIDGET(gtk_builder_get_object(file,"eight_button"));
+     g_signal_connect(widget.eight_button, "clicked", G_CALLBACK(on_eight_button_click),widget.text_scan);
 
-     nine_button   = GTK_WIDGET(gtk_builder_get_object(file,"nine_button"));
-     g_signal_connect(nine_button, "clicked", G_CALLBACK(on_nine_button_click),NULL);
+     widget.nine_button   = GTK_WIDGET(gtk_builder_get_object(file,"nine_button"));
+     g_signal_connect(widget.nine_button, "clicked", G_CALLBACK(on_nine_button_click),widget.text_scan);
 
-     dot_button      = GTK_WIDGET(gtk_builder_get_object(file,"dot_button"));
-     g_signal_connect(dot_button, "clicked", G_CALLBACK(on_dot_button_click),NULL);
+     widget.dot_button      = GTK_WIDGET(gtk_builder_get_object(file,"dot_button"));
+     g_signal_connect(widget.dot_button, "clicked", G_CALLBACK(on_dot_button_click),widget.text_scan);
 
 
-     neg_pos_button  = GTK_WIDGET(gtk_builder_get_object(file,"neg_pos_button"));
-     equal_button    = GTK_WIDGET(gtk_builder_get_object(file,"equal_button"));
+     widget.neg_pos_button  = GTK_WIDGET(gtk_builder_get_object(file,"neg_pos_button"));
 
-     text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
+     widget.equal_button    = GTK_WIDGET(gtk_builder_get_object(file,"equal_button"));
+     g_signal_connect(widget.equal_button, "clicked", G_CALLBACK(on_equal_button_click),NULL);
+
+     widget.text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widget.text_view));
 
      //gtk_builder_connect_signals(file,NULL);
-     gtk_widget_show(main_window);
+     gtk_widget_show(widget.main_window);
 
      gtk_main();
+
+     clear();
      return 0;
 }

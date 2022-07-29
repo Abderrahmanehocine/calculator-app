@@ -37,6 +37,10 @@ operation.o: operation/operation.c operation/operation.h
 check.o: operation/check.c operation/check.h
 	$(CC) -c operation/check.c
 
-# delete the app
+# delete all .o files
 clean:
+	rm *.o
+
+# delete the app
+delete:
 	rm $(PROG)
