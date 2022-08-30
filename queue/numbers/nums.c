@@ -1,6 +1,6 @@
 #include "nums.h"
 
-static double numbers[MAX_SIZE];
+static float numbers[MAX_SIZE];
 static int front = -1;
 static int rear  = -1;
 
@@ -9,25 +9,31 @@ bool numbers_isEmpty(){
 }
 
 bool numbers_isFull(){
-	return (rear+1)%MAX_SIZE == front ? true : false;
+	return (rear+1) % MAX_SIZE == front ? true : false;
 }
 
-void enqueue_number(double button_clicked){
-    if(numbers_isFull()) 
+void enqueue_number(int button_clicked){
+    if(numbers_isFull() || rear == MAX_SIZE) 
         return;
-	if (numbers_isEmpty()){ 
-		front = rear = 0; 
+	if(numbers_isEmpty()){
+		rear = front = 0;
 	}
 	else{
-		rear = (rear+1)%MAX_SIZE;
+		rear++;
 	}
 	numbers[rear] = button_clicked;
 }
 
-void update_number(int button_clicked){
-    if(rear == -1 || numbers[rear] == DBL_MAX)
+void add_update_number(int button_clicked){
+    if(rear == -1 || numbers[rear] >= MAX_NUM)
         return;
     numbers[rear] = (numbers[rear] * 10) + button_clicked;
+}
+
+void delete_update_number(){
+	int num = numbers[rear];
+	num = num / 10;
+	numbers[rear] = num;
 }
 
 void dequeue_number(){
@@ -38,6 +44,14 @@ void dequeue_number(){
 	}
 	else{
 		front = (front+1)%MAX_SIZE;
+	}
+}
+
+void dequeue_all(){
+	int f = front, r = rear;
+	while(f > r){
+		dequeue_number();
+		f++;
 	}
 }
 

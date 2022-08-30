@@ -13,13 +13,10 @@ bool operations_isFull(){
 }
 
 void enqueue_operation(char button_clicked){
-    if(operations_isFull()) 
+    if(operations_isFull() || rear == MAX_OPER) 
         return;
-	if (operations_isEmpty()){ 
-		front = rear = 0; 
-	}
 	else{
-		rear = (rear+1)%MAX_OPER;
+		rear++;
 	}
 	operations[rear] = button_clicked;
 }
@@ -47,4 +44,8 @@ char rear_operation(){
         return '\0';
     }
     return operations[rear];
+}
+
+int number_of_numbers(){
+	return rear;
 }

@@ -7,8 +7,10 @@
 #include <stdio.h>
 #include <float.h>
 #include <stdbool.h>
+#include "../../operation/check.h"
 
 #define MAX_SIZE 15 
+#define MAX_NUM 99999999
 
 //check if the queue of is empty or not
 bool numbers_isEmpty();
@@ -17,13 +19,17 @@ bool numbers_isEmpty();
 bool numbers_isFull();
 
 // enqueue or add new number in the queue of numbers
-void enqueue_number(double button_clicked);
+void enqueue_number(int button_clicked);
 
 // update the rear number of the queue
-void update_number(int button_clicked);
+void add_update_number(int button_clicked);
+
+void delete_update_number();
 
 // dequeue or delete the front number of the queue
 void dequeue_number();
+
+void dequeue_all();
 
 // return the front number of the queue
 float front_number();

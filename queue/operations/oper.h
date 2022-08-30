@@ -13,5 +13,5 @@ void enqueue_operation(char button_clicked);
 void dequeue_operation();
 char front_operation();
 char rear_operation();
-
+int number_of_numbers();
 #endif
